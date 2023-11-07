@@ -1,0 +1,46 @@
+import pygame
+from pygame.locals import *
+from OpenGL.GL import *
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+def lineDDA (x0,y0,xEnd, yEnd):
+ pygame.init()
+pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
+DOUBLEBUF | OPENGL)
+glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+glMatrixMode(GL_PROJECTION)
+
+glLoadIdentity()
+glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1)
+glMatrixMode(GL_MODELVIEW)
+
+while True:
+ for event in pygame.event.get():
+  if event.type == pygame.QUIT:
+   pygame.quit()
+quit()
+dx = xEnd- x0
+dy = yEnd -y0
+x = x0
+y = y0
+
+if (abs(dx) > abs(dy)):
+  steps = abs (dx)
+else:
+ steps = abs(dy)
+
+xIncrement = float(dx)/float(steps)
+yIncrement = float(dy)/ float(steps)
+
+for _ in range(int(steps) + 1):
+ x += xIncrement
+y += yIncrement 
+glBegin(GL_POINTS)
+glColor3f(1.00,1.00,1.00)
+glVertex2d(round(x),round(y))
+glEnd()
+pygame.display.flip()
+
+lineDDA(100,100,350,500)
